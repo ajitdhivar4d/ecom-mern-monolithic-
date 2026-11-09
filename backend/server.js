@@ -39,7 +39,6 @@ app.use(
       "http://127.0.0.1:5173",
       process.env.FRONTEND_URL,
     ],
-
     credentials: true,
   }),
 );
@@ -58,12 +57,15 @@ app.use("/api/orders", OrderRoutes);
 app.use("/api/payments ", PaymentRoutes);
 app.use("/api/analytics", AnalyticsRoutes);
 
-// Serve frontend in production
+// Production frontend
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+  const frontendPath = path.join(__dirname, "../frontend/dist");
 
-  app.use((req, res) => {
-    res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+  app.use(express.static(frontendPath));
+
+  // Handle React Router routes
+  app.get("/{*splat}", (req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
   });
 } else {
   app.get("/", (req, res) => {
