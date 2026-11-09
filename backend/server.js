@@ -9,8 +9,13 @@ import PaymentRoutes from "./routes/paymentRoutes.js";
 import AnalyticsRoutes from "./routes/analyticsRoutes.js";
 
 import dns from "node:dns/promises";
+import path from "node:path";
+import { fileURLToPath } from "url";
 // Or if using CommonJS: const dns = require('node:dns/promises');
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Load environment variables
 dotenv.config();
@@ -55,7 +60,7 @@ app.use("/api/analytics", AnalyticsRoutes);
 
 // Serve frontend in production
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
   app.use((req, res) => {
     res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
