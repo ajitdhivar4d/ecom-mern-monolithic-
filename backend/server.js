@@ -25,12 +25,6 @@ connectDB();
 
 const app = express();
 
-// Set CORS for frontend URL / allow single-node deploy
-// app.use(cors({
-//   origin: ['http://localhost:3000', 'http://127.0.0.1:3000', process.env.FRONTEND_URL],
-//   credentials: true
-// }));
-
 // Middleware
 app.use(
   cors({
@@ -45,12 +39,6 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Default route
-app.get("/", (req, res) => {
-  res.send("ShopNest backend is working");
-});
-
-//
 app.use("/api/auth", UserRoutes);
 app.use("/api/products", ProductRoutes);
 app.use("/api/orders", OrderRoutes);
